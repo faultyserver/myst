@@ -1,24 +1,19 @@
 language: crystal
 script: make spec
-
 os:
   - linux
 crystal:
   - latest
 
 
-jobs:
-  include:
-    - stage: test
-    - if: branch = ci/release-artifacts
-      os: osx
-    - stage: publish release artifacts
-      script: echo "publishing the stuff"
+before_deploy:
+  - tar cf myst-$TRAVIS_TAG-$TRAVIS_OS_NAME.tar.gz bin/* examples/* stdlib/*
 
-# deploy:
-#   provider: releases
-#   api_key: "GITHUB OAUTH TOKEN"
-#   file: "FILE TO UPLOAD"
-#   skip_cleanup: true
-#   on:
-#     tags: true
+deploy:
+  provider: releases
+  api_key:
+    secure: SOjdw7TMN9hI0B6BLK0SnF2/oN1gutEY9GFSw1OxI1W5MnQfo4w6Xv7VhvgKuNeMdcEZcQ/WoYoDYyXC3IEATj3FOD8avi/yo1n/xJiB23K/i4CrIWoftfK7s0IA8mwXIBuazV0tHdkLnIaKuowCsul8qy7irmr4nol6BhAsnYUQNvB35vRAgusj6/VQ1PyZp1tnzJjwigTbFRK+TaESqNLolBi6SAfM1rYyBgkVWijZBI6gc3kEihzOgQvk/V6MOmcLqUAK3A/cf0hCHPn9o3bsW3YJ2t7sWEG2PWEw9qdRc2VIp7vPZKYSctGhgmGyrHJTh2WVNPAGeJ2f2o0/7aY8RleRLSHs8BWap3NI+5b7Hdd1S3OI+1ab0z4dlywX1ocCltSdRol34XJiicG2Mw2uWd3DbOuGNX8GAFePDrUQCA9TPVzpx/aq4CJjnZ6zFoS1ADSn2FwD2++1BUpLooslL3STjSbNoJRmq4LhhwIC1lLzZAFJZpyo+eiRIPwjPZLGRNEI5twhpm+XxbvLvx9JpFnPZ0GOfI+jlIDXP49tr3G4oj/2CVryuyNixCm1c9FqmymYhTsQ4lKNEUeQFn2LS3yfENfeKP6w8Rpi/90oRLv6Yk6dJJDH9umPrlKKNLA4rs6hrfoVBvfsLBIcBR2zCC9eO/VPErMjSvFos38=
+  skip_cleanup: true
+  file: myst-$TRAVIS_TAG-$TRAVIS_OS_NAME.tar.gz
+  on:
+    tags: true
