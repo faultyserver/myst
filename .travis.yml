@@ -7,7 +7,7 @@ crystal:
 
 
 before_deploy:
-  - tar cf myst-$TRAVIS_TAG-$TRAVIS_OS_NAME.tar.gz bin/* examples/* stdlib/*
+  - tar czf myst-$TRAVIS_TAG-$TRAVIS_OS_NAME.tar.gz bin/* examples/* stdlib/*
 
 deploy:
   provider: releases
