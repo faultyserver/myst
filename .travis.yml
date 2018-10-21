@@ -3,13 +3,15 @@ script: make spec
 
 os:
   - linux
-  - osx
 crystal:
   - latest
 
 
 jobs:
   include:
+    - stage: test
+    - if: branch = ci/release-artifacts
+      os: osx
     - stage: publish release artifacts
       script: echo "publishing the stuff"
 
