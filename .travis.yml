@@ -1,24 +1,26 @@
 language: crystal
 script: make spec
-
 os:
   - linux
 crystal:
   - latest
 
-
 jobs:
   include:
-    - stage: test
-    - if: branch = ci/release-artifacts
-      os: osx
-    - stage: publish release artifacts
-      script: echo "publishing the stuff"
+  - stage: test
+  - if: tag IS present
+    os: osx
+  - stage: deploy
+    script: skip
 
-# deploy:
-#   provider: releases
-#   api_key: "GITHUB OAUTH TOKEN"
-#   file: "FILE TO UPLOAD"
-#   skip_cleanup: true
-#   on:
-#     tags: true
+deploy:
+  provider: releases
+  api_key:
+    secure: Vd9ftTI/OcUe1ylYtP9/eJ7Jyh9iFzSTfwCeF8iRzfqYc2XGZWjJSQIe+808eVrEFAUbi4KGfFz59LPNnAC6pjz8Akws5fd6X1Xyb7qNxvcaLUtj3SC09P/wvv7rg77FLcaH4ty9YcsE/8ICnAgD1AKOFiSfBRPc02xb8EdYRwjMXpawcTIJLuUQ15EIbTz1ZDjjHGIP2DADobw5h9O2e3TH3MnRXQG2/GVGSEoa3IoovpU5Xub9iQNNCg38lOddbqyRZN302vSSMRFuwZlljTUuWS9DLrrtqds/CWA+QtgUyzenyoWTycAKvg04C7rKSO6nbVbwngZtI/2tk5a70UngcM9IJONqJYrJUYsHv+XPNJAmO8fXYyUWI7wUQH3b8mntD8xqgW7dAw5Q+N2qgdS6l0+i6kGNDHj56wbGnfS0AMD6G2YIkgjeOymUClhsS/6X+iT1BSDSaO12lV4Om9794buvJpHNusSCe3JVW5PUf162qHbhsMwVz6cgm73lrvnIWgs6EuB6UFqmZ07OWeKx26Q5zAM0n0UcmGSNq/kEwxWzDiUltE+aQbXFj009kaJeeBP9e8gToNhpz3ShLKSsAAQGd5LPKT4CyRCuRJXmy8e5ed5zdFKnCIDpHqOAv8SnOo+URBm2w0QzXqbA5HoztiG3LEzgW2T36Gk/QpQ=
+  file_glob: true
+  file:
+    - bin/*
+    - examples/**/*
+    - stdlib/**/*
+  on:
+    tags: true
