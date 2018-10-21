@@ -3,13 +3,20 @@ script: make spec
 
 os:
   - linux
-  # TODO: Re-add OS X when Travis improves run times.
-  # Alternatively: introduce OS X builds only on master, not on PRs
-  # - osx
+  - osx
 crystal:
   - latest
-  - nightly
-  
-matrix:
-  allow_failures:
-  - crystal: nightly
+
+
+jobs:
+  include:
+    - stage: publish release artifacts
+      script: echo "publishing the stuff"
+
+# deploy:
+#   provider: releases
+#   api_key: "GITHUB OAUTH TOKEN"
+#   file: "FILE TO UPLOAD"
+#   skip_cleanup: true
+#   on:
+#     tags: true
